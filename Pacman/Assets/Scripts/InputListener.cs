@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InputListener : MonoBehaviour
 {
-    private GameObject _player;
+    private Rigidbody2D _playerRb;
     private float _speed;
     private float _axisX;
     private float _axisY;
@@ -14,23 +14,25 @@ public class InputListener : MonoBehaviour
         
     }
 
-    void Update()
+    private void FixedUpdate()
     {
         _axisX = Input.GetAxis("Horizontal");
         _axisY = Input.GetAxis("Vertical");
-        if(_axisX == 1)
-            _player.transform.position += new Vector3(_axisX * _speed * Time.deltaTime, 0);
-        else if(_axisX == -1)
-            _player.transform.position += new Vector3(_axisX * _speed * Time.deltaTime, 0);
-        else if(_axisY == 1)
-            _player.transform.position += new Vector3(0, _axisY * _speed * Time.deltaTime);
-        else if(_axisY == -1)
-            _player.transform.position += new Vector3(0, _axisY * _speed * Time.deltaTime);
+
+        if (_axisX == 1)
+            _playerRb.position += new Vector2(_axisX * _speed * Time.deltaTime, 0);
+        else if (_axisX == -1)
+            _playerRb.position += new Vector2(_axisX * _speed * Time.deltaTime, 0);
+        else if (_axisY == 1)
+            _playerRb.position += new Vector2(0, _axisY * _speed * Time.deltaTime);
+        else if (_axisY == -1)
+            _playerRb.position += new Vector2(0, _axisY * _speed * Time.deltaTime);
+        
     }
 
-    public void Construct(GameObject player, float speed)
+    public void Construct(Rigidbody2D playerRb, float speed)
     {
-        _player = player;
+        _playerRb = playerRb;
         _speed = speed;
     }
 }
