@@ -15,15 +15,24 @@ public class Game
         HealthCounter.OnPlayerDeath += Lose;
     }
 
+    public void StartGame()
+    {
+        Time.timeScale = 1;
+    }
+
     private void Lose()
     {
         _losePanle.SetActive(true);
+        Time.timeScale = 0;
         HealthCounter.OnPlayerDeath -= Lose;
+        BonusCollector.OnPlayerWin -= Win;
     }
 
     private void Win()
     {
         _winPanle.SetActive(true);
+        Time.timeScale = 0;
         BonusCollector.OnPlayerWin -= Win;
+        HealthCounter.OnPlayerDeath -= Lose;
     }
 }

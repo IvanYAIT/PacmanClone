@@ -7,11 +7,13 @@ public class Bootstraper : MonoBehaviour
 {
     [Header("Player Movement")]
     [SerializeField] private InputListener inputListener;
-    [SerializeField] private Rigidbody2D playerRb;
+    [SerializeField] private GameObject playerObject;
     [SerializeField] private float speed;
     [Header("Bonus Collector")]
-    [SerializeField] private int maxAmountOfBonuses;
+    [SerializeField] private int pointsForOneBonus;
+    [SerializeField] private GameObject bonusPool;
     [SerializeField] private TextMeshProUGUI textOfBonus;
+    [SerializeField] private AudioSource bonusAudioSource;
     [Header("Health Counter")]
     [SerializeField] private GameObject[] healthObjects;
     [Header("Other")]
@@ -25,11 +27,12 @@ public class Bootstraper : MonoBehaviour
 
     void Start()
     {
-        game = new Game(losePanel, winPanel);
-        bonusCollector = new BonusCollector(textOfBonus, maxAmountOfBonuses);
+        bonusCollector = new BonusCollector(textOfBonus, bonusPool.transform.childCount, pointsForOneBonus, bonusAudioSource);
         healthCounter = new HealthCounter(healthObjects);
-        inputListener.Construct(playerRb, speed);
+        inputListener.Construct(playerObject, speed);
         player.Construct(bonusCollector, healthCounter);
+        game = new Game(losePanel, winPanel);
+        game.StartGame();
     }
 
     void Update()
