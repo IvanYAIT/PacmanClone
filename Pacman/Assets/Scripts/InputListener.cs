@@ -20,15 +20,10 @@ public class InputListener : MonoBehaviour
         _axisX = Input.GetAxis("Horizontal");
         _axisY = Input.GetAxis("Vertical");
 
-        if (_axisX > 0)
+        if (_axisX != 0)
             _player.transform.position += new Vector3(_axisX * _speed * Time.deltaTime, 0);
-        else if (_axisX < 0)
-            _player.transform.position += new Vector3(_axisX * _speed * Time.deltaTime, 0);
-        else if (_axisY > 0)
+        else if (_axisY != 0)
             _player.transform.position += new Vector3(0, _axisY * _speed * Time.deltaTime);
-        else if (_axisY < 0)
-            _player.transform.position += new Vector3(0, _axisY * _speed * Time.deltaTime);
-        
     }
 
     public void Construct(GameObject player, float speed)
