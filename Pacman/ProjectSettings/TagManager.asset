@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bonus
   - Enemy
+  - Turn
   layers:
   - Default
   - TransparentFX
