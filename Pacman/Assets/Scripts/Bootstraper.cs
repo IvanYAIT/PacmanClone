@@ -20,6 +20,7 @@ public class Bootstraper : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
+    [SerializeField] private LayerMask enemyLayer;
 
     private BonusCollector bonusCollector;
     private HealthCounter healthCounter;
@@ -30,7 +31,7 @@ public class Bootstraper : MonoBehaviour
         bonusCollector = new BonusCollector(textOfBonus, bonusPool.transform.childCount, pointsForOneBonus, bonusAudioSource);
         healthCounter = new HealthCounter(healthObjects);
         inputListener.Construct(playerObject, speed);
-        player.Construct(bonusCollector, healthCounter);
+        player.Construct(bonusCollector, healthCounter, enemyLayer);
         game = new Game(losePanel, winPanel);
         game.StartGame();
     }

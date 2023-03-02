@@ -6,10 +6,12 @@ public class Player : MonoBehaviour
 {
     private BonusCollector _bonusCollector;
     private HealthCounter _healthCounter;
+    private LayerMask _enemyLayer;
+    private int _enemyLayerMask;
 
     void Start()
     {
-        
+        _enemyLayerMask = (int)Mathf.Log(_enemyLayer.value, 2);
     }
 
     void Update()
@@ -28,15 +30,16 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Enemy")
+        if(collision.gameObject.layer == _enemyLayerMask)
         {
             _healthCounter.DecreaseHealth();
         }
     }
 
-    public void Construct(BonusCollector bonusCollector, HealthCounter healthCounter)
+    public void Construct(BonusCollector bonusCollector, HealthCounter healthCounter, LayerMask enemyLayer)
     {
         _bonusCollector = bonusCollector;
         _healthCounter = healthCounter;
+        _enemyLayer = enemyLayer;
     }
 }
