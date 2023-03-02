@@ -54,8 +54,11 @@ public class Turn : MonoBehaviour
                 }
             } catch (Exception)
             {
-                collision.transform.position = transform.position;
-                TurnEnemy(collision.transform);
+                if (!collision.GetComponent<IEatable>().IsEatan)
+                {
+                    collision.transform.position = transform.position;
+                    TurnEnemy(collision.transform);
+                }
             }
             
         }

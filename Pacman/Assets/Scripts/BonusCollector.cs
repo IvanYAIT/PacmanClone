@@ -10,6 +10,7 @@ public class BonusCollector
     private TextMeshProUGUI _textOfBonus;
     private int _maxAmoutOfBonuses;
     private int _pointsForOneBonus;
+    private int _collectedBonuses;
     private AudioSource _audioSource;
 
     public static Action OnPlayerWin;
@@ -25,9 +26,16 @@ public class BonusCollector
     public void AddBonus()
     {
         _amountOfPoints += _pointsForOneBonus;
+        _collectedBonuses++;
         _textOfBonus.text = $"{_amountOfPoints}";
         _audioSource.Play();
-        if (_amountOfPoints == _maxAmoutOfBonuses * _pointsForOneBonus)
+        if (_amountOfPoints == _collectedBonuses)
             OnPlayerWin?.Invoke();
+    }
+
+    public void AddBonus(int points)
+    {
+        _amountOfPoints += points;
+        _textOfBonus.text = $"{_amountOfPoints}";
     }
 }
