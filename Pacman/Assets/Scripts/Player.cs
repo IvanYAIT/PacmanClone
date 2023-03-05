@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private int _bigBonusDuration;
     private int _enemyCounter;
     private int _bonusesForEnemy;
+    private Vector3 _strartPosition;
 
     public static Action<int> OnBigBonusCollect;
 
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     {
         _enemyLayerMask = (int)Mathf.Log(_enemyLayer.value, 2); // это -бесконечность
         _enemyCounter = 0;
+        _strartPosition = transform.position;
     }
 
     void Update()
@@ -47,6 +49,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.layer == (int)Mathf.Log(_enemyLayer.value, 2) && !_isBuffed) // а это -3
         {
+            transform.position = _strartPosition;
             _healthCounter.DecreaseHealth();
         } else if (collision.gameObject.layer == (int)Mathf.Log(_enemyLayer.value, 2) && _isBuffed)
         {

@@ -29,7 +29,7 @@ public class BonusCollector
         _collectedBonuses++;
         _textOfBonus.text = $"{_amountOfPoints}";
         _audioSource.Play();
-        if (_amountOfPoints == _collectedBonuses)
+        if (_maxAmoutOfBonuses == _collectedBonuses)
             OnPlayerWin?.Invoke();
     }
 

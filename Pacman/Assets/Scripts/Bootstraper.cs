@@ -5,24 +5,27 @@ using TMPro;
 
 public class Bootstraper : MonoBehaviour
 {
-    [Header("Player Movement")]
+    [Header("Player")]
     [SerializeField] private InputListener inputListener;
     [SerializeField] private GameObject playerObject;
     [SerializeField] private float speed;
-    [Header("Bonus Collector")]
+    [SerializeField] private Player player;
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private AudioSource deathAudioSource;
+    [Header("Bonus")]
     [SerializeField] private int pointsForOneBonus;
     [SerializeField] private GameObject bonusPool;
     [SerializeField] private TextMeshProUGUI textOfBonus;
     [SerializeField] private AudioSource bonusAudioSource;
+    [SerializeField] private int bigBonusDuration;
+    [SerializeField] private int bonusesForEnemy;
     [Header("Health Counter")]
     [SerializeField] private GameObject[] healthObjects;
     [Header("Other")]
-    [SerializeField] private Player player;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private int bigBonusDuration;
-    [SerializeField] private int bonusesForEnemy;
+    [SerializeField] private AudioSource musicSource;
 
     private BonusCollector bonusCollector;
     private HealthCounter healthCounter;
@@ -31,7 +34,7 @@ public class Bootstraper : MonoBehaviour
     void Start()
     {
         bonusCollector = new BonusCollector(textOfBonus, bonusPool.transform.childCount, pointsForOneBonus, bonusAudioSource);
-        healthCounter = new HealthCounter(healthObjects);
+        healthCounter = new HealthCounter(healthObjects, playerAnimator, deathAudioSource, musicSource);
         inputListener.Construct(playerObject, speed);
         player.Construct(bonusCollector, healthCounter, enemyLayer, bigBonusDuration, bonusesForEnemy);
         game = new Game(losePanel, winPanel);
