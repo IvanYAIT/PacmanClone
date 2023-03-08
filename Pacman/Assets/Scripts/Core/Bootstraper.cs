@@ -37,7 +37,7 @@ public class Bootstraper : MonoBehaviour
         healthCounter = new HealthCounter(healthObjects, playerAnimator, deathAudioSource, musicSource);
         inputListener.Construct(playerObject, speed);
         player.Construct(bonusCollector, healthCounter, enemyLayer, bigBonusDuration, bonusesForEnemy);
-        game = new Game(losePanel, winPanel);
+        game = new Game(losePanel, winPanel, musicSource);
         game.StartGame();
     }
 

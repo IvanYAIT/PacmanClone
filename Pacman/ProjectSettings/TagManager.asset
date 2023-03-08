@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Turn
   - BigBonus
+  - Teleport
   layers:
   - Default
   - TransparentFX

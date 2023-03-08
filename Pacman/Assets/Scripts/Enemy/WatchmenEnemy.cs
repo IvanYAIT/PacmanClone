@@ -1,18 +1,18 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class KillerEnemy : MonoBehaviour, IEatable
+public class WatchmenEnemy : MonoBehaviour, IEatable
 {
-    [SerializeField] private float radius;
     [SerializeField] private float speed;
+    [SerializeField] private GameObject[] points;
     [SerializeField] private int deathDelay;
 
-    public bool IsFollowPlayer { get; private set; }
     public bool IsEatan { get; private set; }
 
-    private Transform _player;
     private NavMeshAgent _agent;
+    private int pointCounter;
     private Color _enemyColor;
     private Color _startColor;
     private bool _isEatable;
@@ -24,44 +24,43 @@ public class KillerEnemy : MonoBehaviour, IEatable
         _enemyColor = GetComponent<SpriteRenderer>().color;
         _startColor = GetComponent<SpriteRenderer>().color;
         _startPosition = transform.position;
+        pointCounter = 0;
         _agent = GetComponent<NavMeshAgent>();
         _agent.updateRotation = false;
         _agent.updateUpAxis = false;
         _agent.speed = speed;
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        Player.OnGetDamage += PlayerGetDamage;
     }
 
-    private void Update()
+    void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            Player.OnGetDamage -= PlayerGetDamage;
+            Player.OnBigBonusCollect -= DeathMode;
+        }
+
         GetComponent<SpriteRenderer>().color = _enemyColor;
 
         if (!_agent.hasPath && IsEatan)
-        {
-            _agent.enabled = false;
             StartCoroutine(Death());
-        }
+
         if (!IsEatan)
         {
-            if (Vector2.Distance(transform.position, _player.position) > radius)
-            {
-                _agent.enabled = false;
-                IsFollowPlayer = false;
-                transform.Translate(new Vector3(0, 1, 0) * speed * Time.deltaTime);
-            }
-            else
-            {
-                _agent.enabled = true;
-                IsFollowPlayer = true;
-                _agent.SetDestination(_player.position);
-            }
+            _agent.SetDestination(points[pointCounter].transform.position);
+            if (!_agent.hasPath)
+                pointCounter++;
+
+            if (pointCounter == points.Length)
+                pointCounter = 0;
         }
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player" && _isEatable)
         {
-            _agent.enabled = true;
             _agent.SetDestination(_startPosition);
             _enemyColor = Color.grey;
             IsEatan = true;
@@ -94,4 +93,11 @@ public class KillerEnemy : MonoBehaviour, IEatable
         _enemyColor = _startColor;
         transform.rotation = new Quaternion();
     }
+
+    private void PlayerGetDamage()
+    {
+        transform.position = _startPosition;
+        transform.rotation = new Quaternion();
+    }
+        
 }

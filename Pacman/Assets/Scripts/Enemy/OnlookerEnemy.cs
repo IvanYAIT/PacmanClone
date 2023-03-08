@@ -26,10 +26,17 @@ public class OnlookerEnemy : MonoBehaviour, IEatable
         _agent.updateUpAxis = false;
         _agent.speed = speed;
         _agent.enabled = false;
+        Player.OnGetDamage += PlayerGetDamage;
     }
 
     private void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            Player.OnGetDamage -= PlayerGetDamage;
+            Player.OnBigBonusCollect -= DeathMode;
+        }
+
         GetComponent<SpriteRenderer>().color = _enemyColor;
 
         if (!_agent.hasPath && IsEatan)
@@ -59,6 +66,7 @@ public class OnlookerEnemy : MonoBehaviour, IEatable
         _enemyColor = Color.blue;
         _isEatable = true;
         StartCoroutine(DeathModeTimer(duration));
+        Player.OnBigBonusCollect -= DeathMode;
     }
 
     private IEnumerator DeathModeTimer(int duration)
@@ -69,7 +77,7 @@ public class OnlookerEnemy : MonoBehaviour, IEatable
             _isEatable = false;
             _enemyColor = _startColor;
         }
-        
+        Player.OnBigBonusCollect += DeathMode;
     }
 
     private IEnumerator Death()
@@ -78,6 +86,12 @@ public class OnlookerEnemy : MonoBehaviour, IEatable
         IsEatan = false;
         _isEatable = false;
         _enemyColor = _startColor;
+        transform.rotation = new Quaternion();
+    }
+
+    private void PlayerGetDamage()
+    {
+        transform.position = _startPosition;
         transform.rotation = new Quaternion();
     }
 }

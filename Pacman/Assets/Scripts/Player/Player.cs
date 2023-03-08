@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private Vector3 _strartPosition;
 
     public static Action<int> OnBigBonusCollect;
+    public static Action OnGetDamage;
 
     void Start()
     {
@@ -43,6 +44,8 @@ public class Player : MonoBehaviour
             OnBigBonusCollect?.Invoke(_bigBonusDuration);
             Destroy(collision.gameObject);
         }
+        if (collision.CompareTag("Teleport"))
+            transform.position = collision.transform.GetChild(0).position;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -51,6 +54,7 @@ public class Player : MonoBehaviour
         {
             transform.position = _strartPosition;
             _healthCounter.DecreaseHealth();
+            OnGetDamage?.Invoke();
         } else if (collision.gameObject.layer == (int)Mathf.Log(_enemyLayer.value, 2) && _isBuffed)
         {
             if (!collision.gameObject.GetComponent<IEatable>().IsEatan)

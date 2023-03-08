@@ -23,16 +23,17 @@ public class HealthCounter
 
     public void DecreaseHealth()
     {
-        
         _animator.SetTrigger("Death");
-        if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
-        {
-            Time.timeScale = 0;
-            _deathAudioSource.Play();
-            _amountOfHealth--;
-            _musicSourece.Pause();
-            _healthObjects[_amountOfHealth].SetActive(false);
-        } 
+        _deathAudioSource.Play();
+        _amountOfHealth--;
+        _healthObjects[_amountOfHealth].SetActive(false);
+        //if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+        //{
+        //    Time.timeScale = 0;
+            
+        //    _musicSourece.Pause();
+            
+        //} 
         
         
         if (_amountOfHealth <= 0)
